@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasa Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="left-element">
+      <div class="big-image">
+        <h1>POST OFFICE: HIGH RISK SCENARIO</h1>
+        <p>On this page, you will find a chatbot for customer service in a post office scenario. In this scenario, you need to mail your passport to an embassy to apply for a visa. Your passport is your only form of identification, and if it gets lost, it would cause significant trouble and inconvenience. However, using the Post Office is your only available method for submitting your application. Your priority is securing the package as much as possible, and you have no regard for the end cost . You are using the chatbot to find out more information about potential postage options.</p>
+        <p>Although the information provided by the chatbot is informed by real world sources, the chatbot itself doesn’t have any connections to any actual Post Office services. The addresses of the receiver (embassy) and sender are also fictitious. The chatbot is only able to respond to queries in English. </p>
+        <p>You can start with either Task 1 or Task 2. However, ensure that you complete Task 3 last. </p>
+        <p><b>Complete the following tasks using the chatbot:</b></p>
+        <ul>
+          <li><b>Task 1: </b>Ask the chatbot for the Post Office’s statistics of letter and parcel losses. </li>
+          <li><b>Task 2: </b>Ask the chatbot to state what remedial actions or compensation the postal service will offer in the case of mail loss.</li>
+          <li><b>Task 3: </b>Ask the chatbot to walk you through postage options available for sending a passport.</li>
+        </ul>
+        <p>Note: During Task 3, you will be asked whether you wish to purchase your requested postage option. There is no right or wrong way to proceed – rejecting or accepting the offer will both eventually lead to the end of the simulation – so please answer truthfully with regards to how you feel.  </p>
+        <p>You will NOT be asked to enter any sensitive information. </p>
+        <p>When asked for postage details, provide the following:</p>
+        <div class="address-1"> <b>Receiver's Address:</b> <br>
+          Embassy of Canada <br> 
+          20 York Road <br>
+          LONDON <br>
+          E2 0EY</div>
+        <div class="address-2"> <b>Sender's (i.e. Your) Address: </b> <br>
+          Bob Smith <br>
+          1 Main Road <br>
+          OXFORD <br>
+          OX76 9RB</div>
+        <p><b>When you have completed all of the above tasks, the chatbot will provide you a link to a questionnaire to record your feedback</b></p>
+        <p>You may also at any time send the message “STOP” to the chatbot to end the dialogue and move on to the questionnaire.</p>
+      </div>
+      
+    </div>
+    <div class="right-element">
+      <div class="chat-container">
+        <div class="chat-header">
+          <img class="chat-header-avatar" src="https://cdn-icons-png.flaticon.com/512/8649/8649607.png" alt="Alisa" />
+          <div class="chat-header-title">Virtual Assistant</div>
+          <button class="chat-header-close">&times;</button>
+        </div>
+        <div class="chat-box" id="chat-box">
+        </div>
+        <!-- Temporary class just to have buttons in it for testing -->
+        <div class="button_space" id="button_space">
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+<!-- Version that works with the Widget that I dunno how to operate: <html>
+    <body>
+        <script>
+            !(function () {
+              let e = document.createElement("script"),
+                t = document.head || document.getElementsByTagName("head")[0];
+              (e.src = "./dist/index.js"),
+                (e.async = !0),
+                (e.onload = () => {
+                  window.ChatbotWidget.default({
+                    rasaServerUrl: "http://localhost:5005/webhooks/rest/webhook",
+                    userId: "jitesh97",
+                    initialPayload: "/greet",
+                    metadata: {},
+                    botAvatar:
+                      "",
+                    widgetColor: "#a78bfa",
+                    textColor: "#4c1d95",
+                    userMsgBackgroundColor: "#e1d7ff",
+                    botTitle: "Retail Bot",
+                    botSubTitle: "Sales & Services Assistant",
+                    botMsgBackgroundColor: "#f3f4f6",
+                    botResponseDelay: "",
+                    chatHeaderCss: {
+                      textColor: "#4c1d95",
+                      backgroundColor: "#a78bfa",
+                      enableBotAvatarBorder: true,
+                    },
+                    chatHeaderTextColor: "#4c1d95",
+                    botMsgColor: "#4b5563",
+                    userMsgColor: "#4c1d95",
+                    embedded: false,
+                    buttonsCss: {
+                      color: "#4c1d95",
+                      backgroundColor: "#e1d7ff",
+                      borderColor: "#4b5563",
+                      borderWidth: "0px",
+                      borderRadius: "999px",
+                      hoverBackgroundColor: "white",
+                      hoverColor: "#4b5563",
+                      hoverborderWidth: "1px",
+                      enableHover: false,
+                    },
+                  });
+                }),
+                t.insertBefore(e, t.firstChild);
+            })();
+          </script>
+    </body>
+</html> -->
+
