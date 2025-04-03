@@ -1,0 +1,230 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - ask_post_stats
+  - ask_insurance
+  - ask_postage_options
+  - bot_challenge
+  - break
+  - stop
+
+# intents:
+  # - greet
+  # - goodbye
+  # - affirm
+  # - deny
+  # - mood_great
+  # - mood_unhappy
+  # - bot_challenge
+
+# Alright, so slots -> since near all of them are from intent (bar the addresses, which will be from text)
+# I don't think I need to create entities for them. Just keeping them as slots is fine, esp because none of them would influence conversation
+# (well, bar the yes/no from whether you would like to continue, but that's more of a story I believe)
+
+slots:
+  tracked:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: from_intent
+        intent: affirm
+        value: true
+        conditions:
+        - active_loop: postage_form
+          requested_slot: tracked
+      - type: from_intent
+        intent: deny
+        value: false
+        conditions:
+        - active_loop: postage_form
+          requested_slot: tracked
+  signed:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: from_intent
+        intent: affirm
+        value: true
+        conditions:
+        - active_loop: postage_form
+          requested_slot: signed
+      - type: from_intent
+        intent: deny
+        value: false
+        conditions:
+        - active_loop: postage_form
+          requested_slot: signed
+  insured:
+    type: bool
+    influence_conversation: false
+    mappings:
+    - type: from_intent
+      intent: affirm
+      value: true
+      conditions:
+      - active_loop: postage_form
+        requested_slot: insured
+    - type: from_intent
+      intent: deny
+      value: false
+      conditions:
+      - active_loop: postage_form
+        requested_slot: insured
+  reciever_address:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      # adding these as otherwise the stop and break rules won't work -> apparently as a list will work
+      # not_intent: 
+      #   - stop 
+      #   - break
+      conditions:
+      - active_loop: address_form
+        requested_slot: reciever_address
+  sender_address:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      # not_intent: 
+      #   - stop 
+      #   - break
+      conditions:
+      - active_loop: address_form
+        requested_slot: sender_address
+
+responses:
+  utter_greet:
+  # Alisa -> Alex, more gender neutral name
+  - text: "Hello, it’s your Post Office Virtual Assistant. What do you need help with?"
+
+  utter_post_stats:
+  - text: "Last year’s data shows that the percentage of lost post was less than 1%. \n\nAs such, it is highly unlikely for an item you will mail to be lost."
+
+  utter_insurance:
+  - text: "When purchasing postage for an item, the sender is given an option to insure the item in case of loss or damage. \n\nIf the insured item is lost, a full refund of the item’s monetary value and postage costs will be provided. \n\nIf insurance wasn’t purchased, the sender is only eligible to claim a refund for the postage costs of the item."
+
+  utter_anything_else:
+  - text: "Is there anything else?"
+
+  utter_ask_further:
+  - text: "What else do you need help with?"
+
+  utter_confirm_further_help:
+  - text: "If you have any other queries, send them here and I will attempt to provide you with an answer."
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_passport_letter:
+  - text: "A passport should be sent as a letter. You will need to purchase special envelopes at the Post Office."
+
+  # Now the questions, which need to be formulated in a specific way
+  # Going with a more expanded version, as I will be having two forms in this bot
+  utter_ask_postage_form_tracked:
+  - text: "Since a Passport is a highly important item, I advice using Tracked Postage. \n\nWith Tracked Postage, you will receive a link which you can use to track the parcel’s location, and a confirmation when the item arrives at its destination. \n\nCost: £3.20 (Most Expensive Postage Option). \n\nIs this suitable?"
+
+  # Just realised that I will not be asking a question here, but instead, will need to fill in the slot through the actions server
+  utter_signed:
+  - text: "The only other option suitable for sending a passport is Signed Postage. \n\nWith Signed Postage, you will receive a confirmation text when the item arrives at its destination. \n\nCost: £2.80."
+
+  utter_ask_postage_form_insured:
+  - text: "It is recommended to add insurance onto your postage. \n\nPostage insurance means that if the package is lost, you will receive compensation equivalent to the postage costs and the item’s value. \n\nInsurance Cost for this Postage: £6.49. \n\nIs this suitable?"
+
+  utter_purchase_interest:
+  - text: "If you wish, you can purchase the postage label now. You will be walked through the purchase process step by step. Sending a message ‘stop’ at any point will stop the process and delete the process' progress. If you make a mistake at any point, wait until the summary is displayed and say ‘no’ when asked if the information is correct. \n\nContinue?"
+
+  utter_end_of_simulation:
+  - text: "(THIS MARKS THE END OF THE SIMULATION, PLEASE CLICK ON THE FOLLOWING LINK TO BE TAKEN TO THE QUESTIONNAIRE)"
+
+  utter_quick_end_of_simulation:
+  - text: "If you have any other queries, send them here and I will attempt to provide you with an answer. \n\n(THIS MARKS THE END OF THE SIMULATION, PLEASE CLICK ON THE FOLLOWING LINK TO BE TAKEN TO THE QUESTIONNAIRE)"
+
+  utter_ask_address_form_reciever_address:
+  - text: "Provide the address of the receiver"
+
+  utter_ask_address_form_sender_address:
+  - text: "Provide your address"
+
+  utter_payment:
+  - text: "Proceed to payment. \n\n(THIS MARKS THE END OF THE SIMULATION, PLEASE CLICK ON THE FOLLOWING LINK TO BE TAKEN TO THE QUESTIONNAIRE)"
+
+  utter_repeat:
+  - text: "Do you want to re-enter any of the details?"
+
+  utter_brievity:
+  - text: "(FOR THE SAKE OF BRIEVITY, YOU ARE NOT REQUIRED TO RE-ENTER THE DETAILS)\n\n (THIS MARKS THE END OF THE SIMULATION. PLEASE CLICK ON THE FOLLOWING LINK TO BE TAKEN TO THE QUESTIONNAIRE)"
+
+  utter_breaking:
+  - text: "The purchase process has been stopped, and all information you've entered has been erased. If you have any other queries, send them here and I will attempt to provide you with an answer."
+
+  utter_please_rephrase:
+  - text: "I don't recognise this input. Please rephrase your answer. \n\n(SIMULATION MESSAGE: IF YOU HAVE SEEN THIS MESSAGE MULTIPLE TIMES, PLEASE USE THE 'SUGGESTED ANSWERS' BUTTONS)"
+
+  utter_inform_rephrase:
+  - text: "I don't recognise this input. I will repeat the question again, please rephrase your answer. \n\n(SIMULATION MESSAGE: IF YOU HAVE SEEN THIS MESSAGE MULTIPLE TIMES, PLEASE USE THE BUTTONS BELOW)"
+
+  utter_default:
+  - text: "(SIMULATION MESSAGE: THE CHATBOT DIDN'T RECOGNISE YOUR MESSAGE'S INTENTION. PLEASE REPHRASE OR USE THE 'SUGGESTED ANSWERS' BUTTONS)"
+
+  utter_address_summary:
+  - text: "Summary: \n 
+      Address of Receiver: \n
+      {reciever_address} \n 
+      Address of Sender: \n
+      {sender_address} \n\nIs this correct?"
+
+# responses:
+  # utter_slot_values:
+  #   - text: "I am going to run a restaurant search using the following parameters:\n
+  #            - tracked: {tracked}\n
+  #            - signed: {signed}\n
+  #            - insured: {insured}\n"
+  # utter_cheer_up:
+  # - text: "Here is something to cheer you up:"
+  #   image: "https://i.imgur.com/nGF1K8f.jpg"
+  # utter_did_that_help:
+  # - text: "Did that help you?"
+  # utter_happy:
+  # - text: "Great, carry on!"
+  # Currently just placeholder, will replace it later
+  # utter_submit:
+  # - text: "All done!"
+
+# Ok you can't have an empty 'actions' thing, if you don't have anything, don't declare it
+actions:
+- validate_postage_form
+- action_calculate_postage_low
+  # - action_joke
+
+forms:
+  postage_form: 
+    ## Note to self: might be adding this if I do add an FAQ
+    ignored_intents:
+    - stop
+    # - faq
+    required_slots:
+      - tracked
+      - signed
+      - insured
+  
+  address_form:
+  # Testing how this will work instead -> from the docs, "Intents listed under ignored_intents will be added to the not_intent key of each slot mapping."
+    ignored_intents:
+    - stop
+    - break
+    required_slots:
+      - reciever_address
+      - sender_address
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

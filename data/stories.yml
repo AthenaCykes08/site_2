@@ -1,0 +1,116 @@
+version: "3.1"
+
+stories:
+
+## Stories for task 1 and 2 - happy paths where either task 1 or task 2 are being done first
+  - story: happy path task 1 first
+    steps:
+      - intent: ask_post_stats
+      - action: utter_post_stats
+      - action: utter_anything_else
+      - intent: ask_insurance
+      - action: utter_insurance
+      - action: utter_anything_else
+  
+  - story: happy path task 2 first
+    steps:
+      - intent: ask_insurance
+      - action: utter_insurance
+      - action: utter_anything_else
+      - intent: ask_post_stats
+      - action: utter_post_stats
+      - action: utter_anything_else 
+  
+## Stories for Task 1 and 2 - happy paths in case someone answers simply "yes", and sad paths in case someone answers "no", to "what can I help with", 
+## prompting further conversation
+  - story: happy path longer task 1 first
+    steps:
+      - intent: ask_post_stats
+      - action: utter_post_stats
+      - action: utter_anything_else
+      - intent: affirm
+      - action: utter_ask_further
+      - intent: ask_insurance
+      - action: utter_insurance
+      - action: utter_anything_else
+  
+  - story: happy path longer task 2 first
+    steps:
+      - intent: ask_insurance
+      - action: utter_insurance
+      - action: utter_anything_else
+      - intent: affirm
+      - action: utter_ask_further
+      - intent: ask_post_stats
+      - action: utter_post_stats
+      - action: utter_anything_else 
+
+  - story: sad path help rejection task 1 first
+    steps:
+      - intent: ask_post_stats
+      - action: utter_post_stats
+      - action: utter_anything_else
+      - intent: deny
+      - action: utter_confirm_further_help
+  
+  - story: sad path help rejection task 2 first
+    steps:
+      - intent: ask_insurance
+      - action: utter_insurance
+      - action: utter_anything_else
+      - intent: deny
+      - action: utter_confirm_further_help
+  
+  ## Task 3 paths - full stories, with either rejection or acceptance of correctly entered address. 
+  ## Path of reject at "utter_purchase_interest" has been commented out and fully converted into a rule-based interaction (tbh so has this but I kept this here bcs yes) 
+  - story: task 3 with acceptance of address
+    steps:
+      - intent: ask_postage_options
+      - action: utter_passport_letter
+      - action: postage_form
+      - active_loop: postage_form
+      - active_loop: null 
+      - action: action_calculate_postage_low
+      - action: utter_purchase_interest
+      - intent: affirm
+      - action: address_form
+      - active_loop: address_form
+      - active_loop: null 
+      - action: utter_address_summary
+      - intent: affirm
+      - action: utter_payment
+
+  - story: task 3 with denial of address
+    steps:
+      - intent: ask_postage_options
+      - action: utter_passport_letter
+      - action: postage_form
+      - active_loop: postage_form
+      - active_loop: null 
+      - action: action_calculate_postage_low
+      - action: utter_purchase_interest
+      - intent: affirm
+      - action: address_form
+      - active_loop: address_form
+      - active_loop: null 
+      - action: utter_address_summary
+      - intent: deny
+      - action: utter_repeat
+      - action: utter_brievity
+
+# Rejected stories
+
+# Ok this created an interesting thing -> if I did a repeat, i.e. one of my inputs wasn't recognised, then the deny at the end would 
+# lead to confirm further help but not utter end of simulation. Two paths: either make a rule with "utter_purchase_interest" "deny" OR 
+# Combine confirm_further_help and end_of_simulation so they are a single reply
+# - story: task 3 with rejection of purchase
+#   steps:
+#     - intent: ask_postage_options
+#     - action: utter_passport_letter
+#     - action: postage_form
+#     - active_loop: postage_form
+#     - active_loop: null 
+#     - action: action_calculate_postage_low
+#     - action: utter_purchase_interest
+#     - intent: deny
+#     - action: utter_quick_end_of_simulation

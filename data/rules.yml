@@ -1,0 +1,133 @@
+version: "3.1"
+
+rules:
+
+## Default RASA rules, kept them in because they didn't do anything wrong to anyone
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Say `hello` when the user starts a conversation with intent `greet`
+  conversation_start: true
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+## Rules for activating and deactivating the forms
+- rule: activate postage form
+  steps:
+    - intent: ask_postage_options
+    - action: utter_passport_letter
+    - action: postage_form
+    - active_loop: postage_form
+
+- rule: submit postage form
+  condition:
+  - active_loop: postage_form
+  steps:
+    - action: postage_form
+    - active_loop: null
+    - action: action_calculate_postage_low
+    - action: utter_purchase_interest
+
+- rule: activate address form
+  condition:
+  - active_loop: null
+  steps:
+    - action: utter_purchase_interest
+    - intent: affirm
+    - action: address_form
+    - active_loop: address_form
+
+- rule: submit address form
+  condition:
+  - active_loop: address_form
+  steps:
+    - action: address_form
+    - active_loop: null
+    - action: utter_address_summary
+
+## Rules for showing users the link to the end of the simulation when the end conditions are met
+- rule: when no wish for postage, end simulation
+  condition:
+  - active_loop: null
+  steps:
+    - action: utter_purchase_interest
+    - intent: deny
+    - action: utter_quick_end_of_simulation
+
+- rule: when all postage info filled in correctly, end simulation
+  steps:
+    - action: utter_address_summary
+    - intent: affirm
+    - action: utter_payment
+
+- rule: if postage info is filled incorrectly, for brevity end simulation
+  steps:
+    - action: utter_address_summary
+    - intent: deny
+    - action: utter_repeat
+    - action: utter_brievity
+
+## Rules for stopping the simulation with either stop or break
+- rule: when stop is sent, end simulation
+  condition:
+  - active_loop: null
+  steps:
+    - intent: stop
+    - action: utter_end_of_simulation
+
+- rule: when stop is sent during postage from, end simulation
+  condition:
+  - active_loop: postage_form
+  steps:
+    - intent: stop
+    - action: action_deactivate_loop
+    - active_loop: null
+    - action: utter_end_of_simulation
+
+- rule: when stop is sent during address from, end simulation
+  condition:
+  - active_loop: address_form
+  steps:
+    - intent: stop
+    - action: action_deactivate_loop
+    - active_loop: null
+    - action: utter_end_of_simulation
+
+- rule: break from address form
+  condition:
+  - active_loop: address_form
+  steps:
+    - intent: break
+    - action: utter_breaking
+    - action: action_deactivate_loop
+    - active_loop: null
+    - action: utter_end_of_simulation
+
+## The nlu_fallback rules -> not having one for address since that is freetext
+- rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+  condition:
+  - active_loop: null
+  steps:
+  - intent: nlu_fallback
+  - action: utter_please_rephrase
+
+- rule: Ask + Inform the user to rephrase whenever they send a message with low NLU confidence
+  condition:
+  - active_loop: postage_form
+  steps:
+  - intent: nlu_fallback
+  - action: utter_inform_rephrase
+  - action: postage_form
+  - active_loop: postage_form
+
+## So the nice thing is, if they go into signed (i.e. say no) and then say smth nonsensical for pt 2 it only repeats the insurance question again
+

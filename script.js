@@ -1,17 +1,17 @@
-let rasaServerUrl = "http://localhost:5005/webhooks/rest/webhook";
+// TODO: remember that for site_2, THIS WILL NEED TO CHANGE TO THE ACTUAL SITE WHERE THE LOW ANTHRO BOT WILL BE KEPT
+let rasaServerUrl = "https://site-2-820874387134.europe-west2.run.app/webhooks/rest/webhook";
 
 // Potential chatbot responses, literally hardcoded in -> when working with real chatbot, will need to change this
 let responses = {
-    utter_greet: "Hello, I'm Alex, and I work for the Post Office. How can I assist you today?",
-    utter_anything_else: "Can I help with anything else?",
-    utter_ask_further: "That's great! What else can I help with?",
-    utter_confirm_further_help: "That's alright. If any other questions come to mind, feel free to ask them here and I will do my best to answer.",
+    utter_greet: "Hello, it’s your Post Office Virtual Assistant. What do you need help with?",
+    utter_anything_else: "Is there anything else?",
+    utter_ask_further: "What else do you need help with?",
+    utter_confirm_further_help: "If you have any other queries, send them here and I will attempt to provide you with an answer.",
     utter_repeat: "(SIMULATION MESSAGE: IF YOU HAVE SEEN THIS MESSAGE MULTIPLE TIMES, PLEASE USE THE 'SUGGESTED ANSWERS' BUTTONS)",
 
-    utter_is_suitable: "Is this option suitable?",
-    utter_is_suitable_verbose: "Is this something that sounds suitable for you?",
-    utter_like_to_continue: " Would you like to continue?",
-    utter_like_to_purchase: " Is this correct?",
+    utter_is_suitable: "Is this suitable?",
+    utter_like_to_continue: "Continue?",
+    utter_like_to_purchase: "Is this correct?",
     utter_repeat_form: "(SIMULATION MESSAGE: IF YOU HAVE SEEN THIS MESSAGE MULTIPLE TIMES, PLEASE USE THE BUTTONS BELOW)"
 }
 
@@ -88,24 +88,27 @@ async function rasaInteraction(msg) {
             // Create the image
             let botImage = document.createElement('img');
             botImage.className = 'avatar';
-            botImage.src = "https://cdn-icons-png.flaticon.com/512/8649/8649607.png";
-            botImage.alt = "Bot Avatar";
+            botImage.src = "https://www.dropbox.com/scl/fi/zzbw46gau2dv501asfhk3/chatbot.png?rlkey=iotpyz7je8j3rrkyvx8xvskdy&st=lervrr4c&raw=1";
+            botImage.alt = "Virtual Assistant Avatar";
             
             // Create the text of the message
             let thinkingMessage = document.createElement("div");
             thinkingMessage.classList.add ("bot-message", "thinking");
-            thinkingMessage.innerHTML = "<i>Alex is typing...</i>";
+            // Another way of adding changed anthropomorphism -> this has a ... while high anthro has 'alex is typing'
+            thinkingMessage.innerHTML = "<i>...</i>";
 
             // Add everything to the container
             thinkingContainer.appendChild(botImage);
             thinkingContainer.appendChild(thinkingMessage);
             chatBox.appendChild(thinkingContainer);
 
+            const count = (msg) => msg.trim().split(/\s+/).length;
+
             // Scroll to bottom
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Wait for 2 seconds before replacing the "thinking" message
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // The low anthropomorphism chatbots have a set waiting time between each message
+            await new Promise(resolve => setTimeout(resolve, 3500));
 
             // Remove the "thinking" message
             chatBox.removeChild(thinkingContainer);
@@ -144,9 +147,11 @@ async function rasaInteraction(msg) {
 // Extract the button making code into its own separate function (need to pass in the lassMsg as a local var)
 function makeButtons(lastMsg) {
 
-    console.log(lastMsg)
+    // console.log(lastMsg)
 
-    console.log(responses.utter_greet === lastMsg)
+    // console.log(responses.utter_greet === lastMsg)
+
+    let className = "";
     
     // Depending on the chatbot response, we replace the currently empty buttonVals with a set of responses appropriate for the response
     let buttonVals = {};
@@ -159,18 +164,19 @@ function makeButtons(lastMsg) {
             buttonVals = {"Statistics": "Hi, how often does the Post Office lose letters and parcels during delivery?", 
                 "Insurance": "What kind of remedial action is taken by the Post Office if the letter is lost?", 
                 "Postage Request": "Could you walk me through potential postage options suitable for sending a passport?"};
-                console.log(buttonVals);
+                // console.log(buttonVals);
+            className = "";
             break;
         case responses.utter_is_suitable:
-        case responses.utter_is_suitable_verbose:
         case responses.utter_like_to_continue: 
         case responses.utter_like_to_purchase:
         case responses.utter_repeat_form:
             buttonVals = {"Yes": "Yes", "No": "No"};
+            className = "input_button";
             break;
     }
 
-    console.log(buttonVals);
+    // console.log(buttonVals);
 
     // Then we make the buttons, where we give button a value corresponding with the text (https://www.w3schools.com/JSREF/prop_pushbutton_value.asp) 
     // and an onclick function that sends the message displayed in the button as a response
@@ -180,7 +186,7 @@ function makeButtons(lastMsg) {
         let responseButton = document.createElement("button");
         responseButton.innerText = val;
         responseButton.value = buttonVals[val];
-        responseButton.className = "input_button";
+        responseButton.className = className;
         responseButton.onclick = () => autofillResponse(responseButton.value);
         buttonPlace.appendChild(responseButton);
     }
@@ -204,7 +210,7 @@ function makeUserMessage(msg) {
     
     let userImage = document.createElement('img');
     userImage.className = 'avatar';
-    userImage.src = "https://cdn-icons-png.flaticon.com/512/8649/8649607.png";
+    userImage.src = "https://www.dropbox.com/scl/fi/yf0bh5vemosqj3qn477t3/user-1.png?rlkey=is8um60xzn691i9r6wyg2hmcv&st=v5agivaw&raw=1";
     userImage.alt = "User Avatar";
 
     let userMessage = document.createElement("div");

@@ -1,0 +1,205 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: break
+  examples: |
+    - break
+    - BREAK
+    - bteak
+    - breal
+    - brwak
+    - bresk
+    - nreak
+    - vreak
+
+- intent: stop
+  examples: |
+    - stop
+    - STOP
+    - swop
+    - sto[
+    - stpp
+    - stoo
+    - atop
+    - syop
+    - srop
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - ye
+    - uh yes
+    - let's do it
+    - yeah
+    - uh yes
+    - um yes
+    - yes knocking
+    - that's correct
+    - yes yes
+    - right
+    - yea
+    - yes
+    - yes right
+    - yes and i dont care
+    - right on
+    - i love that
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+    - maybe
+    - I don't mind
+    - ok
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+    - no thanks
+    - no thank you
+    - uh no
+    - breath no
+    - do you have something else
+    - no this does not work for me
+    - nope
+    - nu uh
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: ask_post_stats
+  examples: |
+    - Hi, how often does the Post Office lose letters and parcels during delivery?
+    - How often is post lost?
+    - How often does mail go missing
+    - How bad is Post Office at their job?
+    - What are the chances of a letter or parcel I send getting lost?
+    - Can you guarantee my letter will always arrive at a correct destination
+    - What are the statsitics on the frequency of undelivered letters and parcels by the Post Office
+    - Can you give me Post Office's statistics on the frequency of letter and parcel losses?
+    - How frequently does the Post Office lose mail?
+    - How likely is it that a letter/parcel I will sent will end up lost
+    - Do people often complain about the frequency of lost post?
+    - What percentage of letters and parcels go missing in the Post Office system?
+    - Tell me how often the Post Office loses mail
+    - Please say what the frequency of loses of letters/parcels is by the Post Office
+    - Is it common for mail to go missing?
+    - How reliable is the Post Office when it comes to preventing postal losses?
+    - Give the latest statistics on lost letters and parcels from the Post Office
+    - What are the latest statistics on lost letters and parcels from the Post Office?
+    - How common is it for mail to go missing during transit
+    - Can you tell me how often letters and parcels fail to reach their destination
+    - How reliable is the Post Office in ensuring mail isn't misrouted or misplaced?
+
+- intent: ask_insurance
+  examples: |
+    - What kind of remedial action is taken by the Post Office if the letter is lost?
+    - Is there any compensation if the mail is lost?
+    - What will be done if the Post Office loses my parcel
+    - What kind of insurance options do you offer
+    - Do you offer insurance for mail?
+    - Tell me what options are there if my letter/parcel goes missing
+    - Will you do anything if post is lost?
+    - How can I further ensure my package arrives at its destination
+    - What remedial action will Post Office make if they lose my parcel
+    - You lost my mail before, how will you ensure it won't happen again?
+    - What support does the Post Office provide for lost or undelivered mail?
+    - Does the Post Office have a policy for compensating customers for lost mail
+    - What remedial actions does the Post Office take when mail is misplaced or undelivered?
+    - Does the Post Office provide a refund for lost parcels, and if so, how much?
+    - What compensation does the postal service offer for missing letters or parcels
+    - Could you please inform me of the actions that will be taken by the post office if my parcel goes missing
+
+- intent: ask_postage_options
+  examples: |
+    - Could you walk me through potential postage options suitable for sending a passport?
+    - List some postage options that would be suitable for sending a passport
+    - Can you give me some advice on mailing options approrpriate for sending a passport?
+    - What postage options are there for me mailing a passport?
+    - I wish to send some identification documents, can you advise me on how to do that?
+    - Do you have any recommendations for shipping for sending a passport
+    - Give me your recommendations of postage for a passport
+    - If you had to send a passport, what postage option would you use?
+    - What kind of letter pricing is there for sending a passport?
+    - What are the available mailing options for sending a passport securely
+    - What are some recommended postage methods for mailing a passport?
+    - I need to send my passport — what shipping would you recommend
+    - Could you list some secure ways to post a passport?
+    - I’m looking to mail a passport — what are my postage options?
+    - Can you give me a step by step walkthrough of shipping options available for sending a passport
+    - Please help me pick the approrpriate postage for sending a passport
+    - I don't know what shipping to buy for sending a passport. Could you give me some advice?
+    - What mail options does the Post Office offer for mailing passports?
+
+# - intent: mood_great
+#   examples: |
+#     - perfect
+#     - great
+#     - amazing
+#     - feeling like a king
+#     - wonderful
+#     - I am feeling very good
+#     - I am great
+#     - I am amazing
+#     - I am going to save the world
+#     - super stoked
+#     - extremely good
+#     - so so perfect
+#     - so good
+#     - so perfect
+
+# - intent: mood_unhappy
+#   examples: |
+#     - my day was horrible
+#     - I am sad
+#     - I don't feel very well
+#     - I am disappointed
+#     - super sad
+#     - I'm so sad
+#     - sad
+#     - very sad
+#     - unhappy
+#     - not good
+#     - not very good
+#     - extremly sad
+#     - so saad
+#     - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
